@@ -1,0 +1,7 @@
+2025-11-05 12:59:43 | INFO | prepare_products | Reading raw file: C:\Repos\smart-store-larry\data\raw\products_data.csv
+2025-11-05 12:59:43 | INFO | prepare_products | Drop duplicates on ['category']: 100 -> 4
+2025-11-05 12:59:43 | INFO | prepare_products | Wrote cleaned file to C:\Repos\smart-store-larry\data\prepared\products_data_prepared.csv
+2025-11-05 13:06:43 | INFO | prepare_products | Reading raw file: C:\Repos\smart-store-larry\data\raw\products_data.csv
+2025-11-05 13:06:43 | INFO | prepare_products | Drop duplicates on all columns: 100 -> 100
+2025-11-05 13:06:43 | INFO | prepare_products | Outlier trim on currentdiscountpct: 100 -> 98
+2025-11-05 13:06:43 | INFO | prepare_products | Wrote cleaned file to C:\Repos\smart-store-larry\data\prepared\products_data_prepared.csv

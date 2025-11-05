@@ -1,0 +1,4 @@
+2025-11-05 13:11:49 | INFO | prepare_customers | Reading C:\Repos\smart-store-larry\data\raw\customers_data.csv
+2025-11-05 13:11:49 | INFO | prepare_customers | Drop duplicates on all cols: 201 -> 201
+2025-11-05 13:11:49 | INFO | prepare_customers | Outlier trim on loyaltypointspts: 201 -> 200
+2025-11-05 13:11:49 | INFO | prepare_customers | Wrote C:\Repos\smart-store-larry\data\prepared\customers_data_prepared.csv

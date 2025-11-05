@@ -1,0 +1,5 @@
+2025-11-05 13:11:50 | INFO | prepare_sales | Reading C:\Repos\smart-store-larry\data\raw\sales_data.csv
+2025-11-05 13:11:50 | INFO | prepare_sales | Drop duplicates on all cols: 2001 -> 2001
+2025-11-05 13:11:50 | INFO | prepare_sales | Outlier trim on customerid: 2001 -> 2000
+2025-11-05 13:11:50 | INFO | prepare_sales | Outlier trim on discountpct: 2000 -> 1999
+2025-11-05 13:11:50 | INFO | prepare_sales | Wrote C:\Repos\smart-store-larry\data\prepared\sales_data_prepared.csv
