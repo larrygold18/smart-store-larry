@@ -2,3 +2,23 @@
 2025-11-05 13:11:49 | INFO | prepare_customers | Drop duplicates on all cols: 201 -> 201
 2025-11-05 13:11:49 | INFO | prepare_customers | Outlier trim on loyaltypointspts: 201 -> 200
 2025-11-05 13:11:49 | INFO | prepare_customers | Wrote C:\Repos\smart-store-larry\data\prepared\customers_data_prepared.csv
+2025-11-05 15:11:32 | INFO | prepare_customers | Reading C:\Repos\smart-store-larry\data\raw\customers_data.csv
+2025-11-05 15:18:05 | INFO | prepare_customers | Reading C:\Repos\smart-store-larry\data\raw\customers_data.csv
+2025-11-05 15:19:41 | INFO | prepare_customers | Reading C:\Repos\smart-store-larry\data\raw\customers_data.csv
+2025-11-05 15:27:45 | INFO | prepare_customers | Reading C:\Repos\smart-store-larry\data\raw\customers_data.csv
+2025-11-05 15:28:06 | INFO | prepare_customers | Reading C:\Repos\smart-store-larry\data\raw\customers_data.csv
+2025-11-05 15:29:58 | INFO | prepare_customers | Reading C:\Repos\smart-store-larry\data\raw\customers_data.csv
+2025-11-05 15:36:05 | INFO | prepare_customers | Reading raw file: C:\Repos\smart-store-larry\data\raw\customers_data.csv
+2025-11-05 15:54:38 | INFO | prepare_customers | Reading raw file: C:\Repos\smart-store-larry\data\raw\customers_data.csv
+2025-11-05 15:54:43 | INFO | prepare_customers | Reading raw file: C:\Repos\smart-store-larry\data\raw\customers_data.csv
+2025-11-05 15:54:52 | INFO | prepare_customers | Reading raw file: C:\Repos\smart-store-larry\data\raw\customers_data.csv
+2025-11-05 15:59:23 | INFO | prepare_customers | Reading raw file: C:\Repos\smart-store-larry\data\raw\customers_data.csv
+2025-11-05 15:59:23 | INFO | prepare_customers | Wrote cleaned file to C:\Repos\smart-store-larry\data\prepared\customers_data_prepared.csv
+2025-11-05 16:36:20 | INFO | prepare_customers | Reading raw file: C:\Repos\smart-store-larry\data\raw\customers_data.csv
+2025-11-05 16:36:20 | INFO | prepare_customers | Wrote cleaned file to C:\Repos\smart-store-larry\data\prepared\customers_data_prepared.csv
+2025-11-05 16:48:12 | INFO | prepare_customers | Reading raw file: C:\Repos\smart-store-larry\data\raw\customers_data.csv
+2025-11-05 16:48:12 | INFO | prepare_customers | Wrote cleaned file to C:\Repos\smart-store-larry\data\prepared\customers_data_prepared.csv
+2025-11-05 16:55:35 | INFO | prepare_customers | Reading raw file: C:\Repos\smart-store-larry\data\raw\customers_data.csv
+2025-11-05 16:55:35 | INFO | prepare_customers | Wrote cleaned file to C:\Repos\smart-store-larry\data\prepared\customers_data_prepared.csv
+2025-11-05 17:10:11 | INFO | prepare_customers | Reading raw file: C:\Repos\smart-store-larry\data\raw\customers_data.csv
+2025-11-05 17:10:11 | INFO | prepare_customers | Wrote cleaned file to C:\Repos\smart-store-larry\data\prepared\customers_data_prepared.csv

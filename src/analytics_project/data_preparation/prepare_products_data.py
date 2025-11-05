@@ -6,6 +6,7 @@ from typing import Iterable
 # bring in the logger adapter and settings file
 from ..utils.logger import get_logger
 from .. import settings
+from analytics_project.data_scrubber import DataScrubber
 
 # initialize a logger specific to this script
 log = get_logger("prepare_products")
@@ -13,10 +14,7 @@ print("DEBUG logger type:", type(log))
 
 
 def standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Standardize column names: lowercase, replace spaces and symbols with underscores,
-    and remove leading/trailing underscores.
-    """
+    """(Legacy helper) Standardize column names to snake_case."""
     df.columns = (
         df.columns.str.strip()
         .str.replace("\n", " ", regex=False)
@@ -30,10 +28,7 @@ def standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
 def remove_outliers_iqr(
     df: pd.DataFrame, cols: Iterable[str] | None = None, k: float | None = None
 ) -> pd.DataFrame:
-    """
-    Remove numeric outliers using the IQR rule.
-    Any row with a numeric value outside [Q1 - k*IQR, Q3 + k*IQR] is dropped.
-    """
+    """(Legacy helper) Remove numeric outliers using the IQR rule."""
     if k is None:
         k = settings.OUTLIER_IQR_K
     if cols is None:
@@ -54,53 +49,55 @@ def remove_outliers_iqr(
 
 def main() -> None:
     """Read raw product data, clean it, and save the prepared dataset."""
-    raw_path = settings.PRODUCTS_RAW
-    out_path = settings.PRODUCTS_PREP
+    raw_path = settings.PRODUCTS_RAW  # e.g., Path("data/raw/products_data.csv")
+    out_path = settings.PRODUCTS_PREP  # e.g., Path("data/prepared/products_prepared.csv")
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
     log.info(f"Reading raw file: {raw_path}")
     df = pd.read_csv(raw_path)
     raw_count = len(df)
 
-    # --- 1. standardize column names ---
-    df = standardize_columns(df)
+    # 0) reusable scrubber
+    scrub = DataScrubber()
 
-    # --- 2. enforce data types ---
-    if "product_id" in df.columns:
-        df["product_id"] = pd.to_numeric(df["product_id"], errors="coerce").astype("Int64")
+    # 1) map raw headers -> desired names (LEFT must match your CSV exactly)
+    mapping = {
+        "Unit Price": "unit_price",
+        "UnitPrice": "unit_price",
+        "Price": "unit_price",
+        # "Product ID": "product_id",
+        # "Product Name": "product_name",
+        # "Category": "category",
+    }
 
-    # --- 3. clean up text fields ---
-    for col in df.select_dtypes(include=["object"]).columns:
-        df[col] = df[col].astype(str).str.strip()
+    # 1) columns & strings
+    df = scrub.standardize_columns(df, mapping=mapping)  # -> snake_case headers
+    print("Columns after standardize:", list(df.columns))  # TEMP: remove later
+    df = scrub.trim_whitespace(df)
+    df = scrub.normalize_categories(df, ["category"], case="lower")  # optional
 
-    # --- 4. business rules ---
-    for price_col in [
-        c for c in df.columns if c in {"price", "unit_price", "list_price"} or "price" in c
-    ]:
-        df[price_col] = pd.to_numeric(df[price_col], errors="coerce")
-        df.loc[df[price_col] <= 0, price_col] = pd.NA
+    # 2) types
+    df = scrub.to_numeric(df, ["unit_price"])
 
-    for col in [c for c in df.columns if c in {"cost", "weight", "stock"}]:
-        df[col] = pd.to_numeric(df[col], errors="coerce")
+    # 3) dedupe & empties
+    df = scrub.drop_empty_rows(df)
+    df = scrub.drop_duplicates(df)
 
-    # --- 5. remove duplicates ---
-    subset = [c for c in ("product_id", "sku") if c in df.columns]
-    if not subset:
-        fallback = [c for c in ("product_name", "brand", "category", "model") if c in df.columns]
-        subset = fallback if len(fallback) >= 2 else None
+    # 4) missing values
+    df = scrub.fill_missing(df, {"category": {"method": "mode"}})
 
-    before = len(df)
-    df = df.drop_duplicates(subset=subset, keep="first")
-    log.info(f"Drop duplicates on {subset or 'all columns'}: {before} -> {len(df)}")
+    # 5) (optional) outliers
+    df = scrub.remove_outliers_iqr(df, ["unit_price"], factor=1.5)
 
-    # --- 6. remove numeric outliers ---
-    df = remove_outliers_iqr(df)
+    # 6) schema (only include columns that really exist)
+    required = {
+        "unit_price": "float64",
+    }
+    scrub.validate_schema(df, required)
 
-    # --- 7. finalize and save ---
-    df = df.dropna(how="all")
+    # 7) write
     df.to_csv(out_path, index=False)
     log.info(f"Wrote cleaned file to {out_path}")
-
     print(f"Products raw count: {raw_count}")
     print(f"Products prepared count: {len(df)}")
 

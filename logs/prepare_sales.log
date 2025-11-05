@@ -3,3 +3,7 @@
 2025-11-05 13:11:50 | INFO | prepare_sales | Outlier trim on customerid: 2001 -> 2000
 2025-11-05 13:11:50 | INFO | prepare_sales | Outlier trim on discountpct: 2000 -> 1999
 2025-11-05 13:11:50 | INFO | prepare_sales | Wrote C:\Repos\smart-store-larry\data\prepared\sales_data_prepared.csv
+2025-11-05 17:02:43 | INFO | prepare_sales | Reading raw file: C:\Repos\smart-store-larry\data\raw\sales_data.csv
+2025-11-05 17:02:43 | INFO | prepare_sales | Wrote cleaned file to C:\Repos\smart-store-larry\data\prepared\sales_data_prepared.csv
+2025-11-05 17:10:14 | INFO | prepare_sales | Reading raw file: C:\Repos\smart-store-larry\data\raw\sales_data.csv
+2025-11-05 17:10:14 | INFO | prepare_sales | Wrote cleaned file to C:\Repos\smart-store-larry\data\prepared\sales_data_prepared.csv

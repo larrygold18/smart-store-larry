@@ -1,81 +1,95 @@
+# src/analytics_project/data_preparation/prepare_sales_data.py
 import pandas as pd
-import numpy as np
-
 from ..utils.logger import get_logger
 from .. import settings
+from analytics_project.data_scrubber import DataScrubber
 
 log = get_logger("prepare_sales")
 
 
-def standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
-    df.columns = (
-        df.columns.str.strip()
-        .str.replace("\n", " ", regex=False)
-        .str.replace(r"[^0-9a-zA-Z]+", "_", regex=True)
-        .str.lower()
-        .str.strip("_")
-    )
-    return df
-
-
-def remove_outliers_iqr(df: pd.DataFrame, k: float | None = None) -> pd.DataFrame:
-    if k is None:
-        k = settings.OUTLIER_IQR_K
-    for col in df.select_dtypes(include=["number"]).columns:
-        q1, q3 = df[col].quantile(0.25), df[col].quantile(0.75)
-        iqr = q3 - q1
-        if pd.isna(iqr) or iqr == 0:
-            continue
-        lo, hi = q1 - k * iqr, q3 + k * iqr
-        before = len(df)
-        df = df[(df[col].between(lo, hi)) | df[col].isna()]
-        if before != len(df):
-            log.info(f"Outlier trim on {col}: {before} -> {len(df)}")
-    return df
-
-
 def main() -> None:
+    """Clean and prepare the sales data for ETL."""
     raw_path = settings.SALES_RAW
     out_path = settings.SALES_PREP
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
-    log.info(f"Reading {raw_path}")
+    log.info(f"Reading raw file: {raw_path}")
     df = pd.read_csv(raw_path)
     raw_count = len(df)
 
-    df = standardize_columns(df)
+    scrub = DataScrubber()
 
-    # Parse dates (best guess column names)
-    for c in [c for c in df.columns if "date" in c or c in {"order_date", "sale_date"}]:
-        df[c] = pd.to_datetime(df[c], errors="coerce")
+    # 1️⃣ Map raw headers to canonical names (exactly matches your screenshot)
+    mapping = {
+        "transactionid": "transaction_id",
+        "saledate": "order_date",
+        "customerid": "customer_id",
+        "productid": "product_id",
+        "storeid": "store_id",
+        "campaignid": "campaign_id",
+        "saleamount": "sale_amount",
+        "discountpct": "discount_pct",
+        "statecode": "state_code",
+    }
 
-    # Numeric conversions
-    for c in ["quantity", "unit_price", "discount", "total"]:
-        if c in df.columns:
-            df[c] = pd.to_numeric(df[c], errors="coerce")
+    # 2️⃣ Standardize columns
+    df = scrub.standardize_columns(df, mapping=mapping)
+    # print("Sales columns after standardize:", list(df.columns))  # TEMP debug
 
-    # Business rules
-    if "quantity" in df.columns:
-        df.loc[df["quantity"] <= 0, "quantity"] = pd.NA
-    if {"quantity", "unit_price", "total"}.issubset(df.columns):
-        calc_total = df["quantity"] * df["unit_price"]
-        delta = (df["total"] - calc_total).abs()
-        thr = 10 * delta.median(skipna=True)
-        df.loc[delta > thr, "total"] = pd.NA  # mark insane mismatches
+    # 3️⃣ Clean strings and normalize state codes
+    df = scrub.trim_whitespace(df)
+    if "state_code" in df.columns:
+        df["state_code"] = df["state_code"].astype(str).str.strip().str.upper()
 
-    # Dedupe on transaction id if present
-    subset = [c for c in ["sale_id", "order_id"] if c in df.columns] or None
-    before = len(df)
-    df = df.drop_duplicates(subset=subset, keep="first")
-    log.info(f"Drop duplicates on {subset or 'all cols'}: {before} -> {len(df)}")
+    # 4️⃣ Convert types
+    if "order_date" in df.columns:
+        df = scrub.to_datetime(df, ["order_date"])
+    if "sale_amount" in df.columns:
+        df = scrub.to_numeric(df, ["sale_amount"])
+    if "discount_pct" in df.columns:
+        df = scrub.to_numeric(df, ["discount_pct"])
 
-    # Remove numeric outliers
-    df = remove_outliers_iqr(df)
+    # 5️⃣ Drop empties & duplicates
+    df = scrub.drop_empty_rows(df)
+    df = scrub.drop_duplicates(df)
 
-    df = df.dropna(how="all")
+    # 6️⃣ Fill missing values
+    fill_plan = {}
+    if "discount_pct" in df.columns:
+        fill_plan["discount_pct"] = {"method": "constant", "value": 0}
+    if "state_code" in df.columns:
+        fill_plan["state_code"] = {"method": "mode"}
+    if fill_plan:
+        df = scrub.fill_missing(df, fill_plan)
+
+    # 7️⃣ (Optional) Outlier handling
+    if "sale_amount" in df.columns:
+        df = scrub.remove_outliers_iqr(df, ["sale_amount"], factor=1.5)
+
+    # 8️⃣ Derived metrics (optional)
+    if "discount_pct" in df.columns and "sale_amount" in df.columns:
+        df["net_sale_amount"] = df["sale_amount"] * (1 - (df["discount_pct"].fillna(0) / 100))
+
+    # 9️⃣ Schema validation
+    required = {
+        "transaction_id": "string",
+        "order_date": "datetime64[ns]",
+        "customer_id": "string",
+        "product_id": "string",
+        "store_id": "string",
+        "campaign_id": "string",
+        "sale_amount": "float64",
+        "discount_pct": "float64",
+        "state_code": "string",
+        "net_sale_amount": "float64",
+    }
+    required_subset = {k: v for k, v in required.items() if k in df.columns}
+    if required_subset:
+        scrub.validate_schema(df, required_subset)
+
+    # 🔟 Write cleaned data
     df.to_csv(out_path, index=False)
-    log.info(f"Wrote {out_path}")
-
+    log.info(f"Wrote cleaned file to {out_path}")
     print(f"Sales raw count: {raw_count}")
     print(f"Sales prepared count: {len(df)}")
 
