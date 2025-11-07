@@ -1,0 +1,4 @@
+file,rows,cols
+customers_data.csv,201,6
+products_data.csv,100,6
+sales_data.csv,2001,9
