@@ -13,5 +13,5 @@
 - `sale_amount` must be non-null and ≥ 0
 - Dates stored as ISO `YYYY-MM-DD` TEXT (SQLite)
 
-**Screenshots**
-![DW screenshot](docs/p4_dw_screenshot.png)
+![DW Screenshot](docs/images/p4_dw_screenshot.png)
+
