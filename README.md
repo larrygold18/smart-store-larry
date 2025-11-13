@@ -1,50 +1,17 @@
-# 🧩 Module 3 — Data Preparation for ETL
+## P4: Data Warehouse (SQLite)
 
-This module completes the data preparation pipeline for the Smart Store project.
-Using a reusable **DataScrubber** class, all raw data tables were standardized, cleaned, validated, and saved into `data/prepared/` for future ETL and BI analysis.
+**Design**: Star schema
+- **Fact**: `sale(sale_id, transaction_id, sale_date, customer_id, product_id, store_id, campaign_id, sale_amount, discount_pct, state_code)`
+- **Dims**:
+  - `customer(customer_id, name, country, signup_date, loyalty_points, preferred_contact)`
+  - `product(product_id, product_name, category, unit_price, current_discount_pct, supplier)`
 
----
+**ETL output**: `data/dw/smart_sales.db`
+**Row counts** (from script): customers=190, products=100, sales=1890 (110 sale rows dropped for missing FKs)
+**Data quality rules**:
+- FK integrity (`sale.customer_id` → `customer.customer_id`; `sale.product_id` → `product.product_id`)
+- `sale_amount` must be non-null and ≥ 0
+- Dates stored as ISO `YYYY-MM-DD` TEXT (SQLite)
 
-## ⚙️ Tools & Environment
-- **Python 3.12**
-- **pandas** for data processing
-- **Visual Studio Code** on **Windows 11**
-- **Custom DataScrubber class** for reusable cleaning functions
-- **uv** for environment management
-- **Git / GitHub** for version control
-
----
-
-## 🧠 Objective
-Prepare all three raw datasets (`customers`, `products`, `sales`) for loading into a centralized data warehouse.
-Steps include:
-1. Standardize column names (snake_case)
-2. Trim whitespace and normalize text
-3. Convert datatypes (`datetime`, numeric)
-4. Remove duplicates and empty rows
-5. Fill missing values with mode or constants
-6. Optionally remove outliers using IQR
-7. Validate schema and export cleaned data
-
----
-
-## 🧹 Final Row Counts
-
-| Dataset   | Raw Count | Prepared Count |
-|------------|-----------|----------------|
-| Customers  | 201       | 190            |
-| Products   | 100       | 100            |
-| Sales      | 2001      | 2001           |
-
----
-
-## 🧾 Example Commands (Windows / PowerShell)
-
-```powershell
-# Activate environment
-.\.venv\Scripts\Activate.ps1
-
-# Run data prep scripts
-uv run python -m analytics_project.data_preparation.prepare_customers_data
-uv run python -m analytics_project.data_preparation.prepare_products_data
-uv run python -m analytics_project.data_preparation.prepare_sales_data
+**Screenshots**
+![DW screenshot](docs/p4_dw_screenshot.png)
