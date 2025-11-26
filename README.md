@@ -247,6 +247,10 @@ From the script output:
 ### Drilldown Result (Monthly Trend)
 ![Drilldown Chart](olap/figures/drilldown_monthly_trend.png)
 
+##   Data Outputs (CSV Files)
+
+- [OLAP Cube CSV](olap/figures/cube_category_state_year_month.csv)
+- [Dice Breakdown CSV](olap/figures/dice_top_category_by_state.csv)
 
 # 6. Suggested Business Action
 
