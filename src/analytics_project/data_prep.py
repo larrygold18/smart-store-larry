@@ -16,6 +16,9 @@ from pathlib import Path
 import logging
 from typing import Dict
 import pandas as pd
+import sys
+
+sys.stdout.reconfigure(encoding='utf-8')
 
 # Try a shared logger if you add one later; fall back to basic logging.
 try:
