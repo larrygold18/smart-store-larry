@@ -130,3 +130,462 @@ X-axis: Date hierarchy
 Y-axis: Sum of saleamount
 
 Drilldown enabled (⬇⬇ icon)
+P6 – BI Insights & Storytelling (OLAP Analysis)
+
+This module builds on earlier Smart Store work by performing OLAP-style slicing, dicing, and drilldown to uncover actionable business insights using Python on Windows 11.
+
+1. Business Goal
+
+Goal:
+Identify the top-selling product category and analyze how that category’s sales vary by state and by month, so the Smart Store can improve:
+
+inventory planning
+
+targeted marketing
+
+seasonal sales forecasting
+
+This goal focuses on a specific outcome:
+➡ Which category should the business prioritize and how should it plan by geography and time?
+
+2. Data Source
+
+I used the prepared CSVs generated during Projects P3–P5:
+
+sales_data_prepared_clean.csv
+
+Includes: transactionid, productid, customerid, saleamount, SaleDate.1, statecode
+
+products_data_prepared.csv
+
+Includes: productid, productname, category
+
+customers_data_prepared.csv
+
+Includes: customer_id (renamed to customerid), country, signup_date
+
+Columns Used in Analysis
+Table	Columns	Purpose
+Sales	saleamount, statecode, SaleDate.1	Metric + geography + time
+Products	productid, category	Category dimension
+Sales (derived)	Year, Month	Drilldown time hierarchy
+
+All files stored in:
+
+data/prepared/
+
+3. Tools
+
+Windows 11
+
+Python 3 inside .venv
+
+pandas — OLAP grouping, slicing, dicing, drilldown
+
+matplotlib — visualizations
+
+VS Code — execution and editing
+
+Main script for OLAP logic:
+
+olap/goal_top_category_by_state_month.py
+
+
+Full documentation:
+
+olap/OLAP.md
+
+4. Workflow & OLAP Logic
+4.1 Steps Performed
+
+Loaded prepared CSVs.
+
+Converted SaleDate.1 to datetime format.
+
+Converted saleamount to numeric.
+
+Merged sales + products to attach categories.
+
+Added time hierarchy columns:
+
+Year
+
+Month
+
+Built OLAP cube grouped by:
+
+category × statecode × Year × Month
+
+
+Computed:
+
+SUM(saleamount) AS total_sales
+
+
+Slice: Filtered cube to only the top category.
+
+Dice: Broke down the top category by statecode.
+
+Drilldown: Examined the monthly trend for the top category.
+
+5. Results & Visualizations
+Top Category
+
+From the OLAP script:
+
+➡️ Top Category: home
+
+5.1 DICE Result — Top Category by State
+
+Insight:
+Certain states strongly drive Home-category sales.
+These states are candidates for:
+
+Additional inventory
+
+Regional advertising
+
+Localized promotions
+
+5.2 DRILLDOWN — Monthly Trend for Top Category
+
+Insight:
+Sales for the top category vary significantly by month —
+a seasonal pattern exists that can guide:
+
+Ordering cycles
+
+Discount timing
+
+Holiday promotions
+
+6. Suggested Business Action
+
+Based on this analysis:
+
+✔ Inventory Strategy
+
+Prioritize stocking the Home category in the highest-performing states.
+
+✔ Marketing Strategy
+
+Deploy targeted campaigns in states with lower sales to increase awareness.
+
+✔ Seasonal Planning
+
+Use the monthly trend to determine which months need:
+
+More inventory
+
+More marketing spend
+
+Or clearance activity
+
+P6 – BI Insights & Storytelling (OLAP Analysis)
+
+This module builds on earlier Smart Store work by performing OLAP-style slicing, dicing, and drilldown to uncover actionable business insights using Python on Windows 11.
+
+1. Business Goal
+
+Goal:
+Identify the top-selling product category and analyze how that category’s sales vary by state and by month, so the Smart Store can improve:
+
+inventory planning
+
+targeted marketing
+
+seasonal sales forecasting
+
+This goal focuses on a specific outcome:
+➡ Which category should the business prioritize and how should it plan by geography and time?
+
+2. Data Source
+
+I used the prepared CSVs generated during Projects P3–P5:
+
+sales_data_prepared_clean.csv
+
+Includes: transactionid, productid, customerid, saleamount, SaleDate.1, statecode
+
+products_data_prepared.csv
+
+Includes: productid, productname, category
+
+customers_data_prepared.csv
+
+Includes: customer_id (renamed to customerid), country, signup_date
+
+Columns Used in Analysis
+Table	Columns	Purpose
+Sales	saleamount, statecode, SaleDate.1	Metric + geography + time
+Products	productid, category	Category dimension
+Sales (derived)	Year, Month	Drilldown time hierarchy
+
+All files stored in:
+
+data/prepared/
+
+3. Tools
+
+Windows 11
+
+Python 3 inside .venv
+
+pandas — OLAP grouping, slicing, dicing, drilldown
+
+matplotlib — visualizations
+
+VS Code — execution and editing
+
+Main script for OLAP logic:
+
+olap/goal_top_category_by_state_month.py
+
+
+Full documentation:
+
+olap/OLAP.md
+
+4. Workflow & OLAP Logic
+4.1 Steps Performed
+
+Loaded prepared CSVs.
+
+Converted SaleDate.1 to datetime format.
+
+Converted saleamount to numeric.
+
+Merged sales + products to attach categories.
+
+Added time hierarchy columns:
+
+Year
+
+Month
+
+Built OLAP cube grouped by:
+
+category × statecode × Year × Month
+
+
+Computed:
+
+SUM(saleamount) AS total_sales
+
+
+Slice: Filtered cube to only the top category.
+
+Dice: Broke down the top category by statecode.
+
+Drilldown: Examined the monthly trend for the top category.
+
+5. Results & Visualizations
+Top Category
+
+From the OLAP script:
+
+➡️ Top Category: home
+
+5.1 DICE Result — Top Category by State
+
+Insight:
+Certain states strongly drive Home-category sales.
+These states are candidates for:
+
+Additional inventory
+
+Regional advertising
+
+Localized promotions
+
+5.2 DRILLDOWN — Monthly Trend for Top Category
+
+Insight:
+Sales for the top category vary significantly by month —
+a seasonal pattern exists that can guide:
+
+Ordering cycles
+
+Discount timing
+
+Holiday promotions
+
+6. Suggested Business Action
+
+Based on this analysis:
+
+✔ Inventory Strategy
+
+Prioritize stocking the Home category in the highest-performing states.
+
+✔ Marketing Strategy
+
+Deploy targeted campaigns in states with lower sales to increase awareness.
+
+✔ Seasonal Planning
+
+Use the monthly trend to determine which months need:
+
+More inventory
+
+More marketing spend
+
+Or clearance activity
+
+P6 – BI Insights & Storytelling (OLAP Analysis)
+
+This module builds on earlier Smart Store work by performing OLAP-style slicing, dicing, and drilldown to uncover actionable business insights using Python on Windows 11.
+
+1. Business Goal
+
+Goal:
+Identify the top-selling product category and analyze how that category’s sales vary by state and by month, so the Smart Store can improve:
+
+inventory planning
+
+targeted marketing
+
+seasonal sales forecasting
+
+This goal focuses on a specific outcome:
+➡ Which category should the business prioritize and how should it plan by geography and time?
+
+2. Data Source
+
+I used the prepared CSVs generated during Projects P3–P5:
+
+sales_data_prepared_clean.csv
+
+Includes: transactionid, productid, customerid, saleamount, SaleDate.1, statecode
+
+products_data_prepared.csv
+
+Includes: productid, productname, category
+
+customers_data_prepared.csv
+
+Includes: customer_id (renamed to customerid), country, signup_date
+
+Columns Used in Analysis
+Table	Columns	Purpose
+Sales	saleamount, statecode, SaleDate.1	Metric + geography + time
+Products	productid, category	Category dimension
+Sales (derived)	Year, Month	Drilldown time hierarchy
+
+All files stored in:
+
+data/prepared/
+
+3. Tools
+
+Windows 11
+
+Python 3 inside .venv
+
+pandas — OLAP grouping, slicing, dicing, drilldown
+
+matplotlib — visualizations
+
+VS Code — execution and editing
+
+Main script for OLAP logic:
+
+olap/goal_top_category_by_state_month.py
+
+
+Full documentation:
+
+olap/OLAP.md
+
+4. Workflow & OLAP Logic
+4.1 Steps Performed
+
+Loaded prepared CSVs.
+
+Converted SaleDate.1 to datetime format.
+
+Converted saleamount to numeric.
+
+Merged sales + products to attach categories.
+
+Added time hierarchy columns:
+
+Year
+
+Month
+
+Built OLAP cube grouped by:
+
+category × statecode × Year × Month
+
+
+Computed:
+
+SUM(saleamount) AS total_sales
+
+
+Slice: Filtered cube to only the top category.
+
+Dice: Broke down the top category by statecode.
+
+Drilldown: Examined the monthly trend for the top category.
+
+5. Results & Visualizations
+Top Category
+
+From the OLAP script:
+
+➡️ Top Category: home
+
+5.1 DICE Result — Top Category by State
+
+Insight:
+Certain states strongly drive Home-category sales.
+These states are candidates for:
+
+Additional inventory
+
+Regional advertising
+
+Localized promotions
+
+5.2 DRILLDOWN — Monthly Trend for Top Category
+
+Insight:
+Sales for the top category vary significantly by month —
+a seasonal pattern exists that can guide:
+
+Ordering cycles
+
+Discount timing
+
+Holiday promotions
+
+6. Suggested Business Action
+
+Based on this analysis:
+
+✔ Inventory Strategy
+
+Prioritize stocking the Home category in the highest-performing states.
+
+✔ Marketing Strategy
+
+Deploy targeted campaigns in states with lower sales to increase awareness.
+
+✔ Seasonal Planning
+
+Use the monthly trend to determine which months need:
+
+More inventory
+
+More marketing spend
+
+Or clearance activity
+
+7. Challenges and Solutions
+Challenge	Solution
+Misformatted sale dates	Used pd.to_datetime with error coercion and dropped invalid rows
+saleamount stored as text	Converted with pd.to_numeric
+Date column names inconsistent (saledate, SaleDate.1)	Added column detection logic in script
+Multiple joins required	Standardized customerid naming and merged on productid
