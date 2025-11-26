@@ -239,33 +239,14 @@ From the script output:
 
 ---
 
-## **5.1 Dice – Sales by State for Top Category**
+## 5.1  Visualizations
 
-![Dice by State](olap/figures/dice_top_category_by_state.png)
+### Dice Result (Top Category by State)
+![Dice Chart](olap/figures/dice_top_category_by_state.png)
 
-**Insight:**  
-Some states contribute dramatically more to Home-category revenue.  
-These areas are prime candidates for:
+### Drilldown Result (Monthly Trend)
+![Drilldown Chart](olap/figures/drilldown_monthly_trend.png)
 
-- Larger inventory  
-- Stronger regional advertising  
-- Store expansion consideration  
-
----
-
-## **5.2 Drilldown – Monthly Trend of Top Category**
-
-![Monthly Trend](olap/figures/drilldown_monthly_trend.png)
-
-**Insight:**  
-Sales vary significantly by month — some months show clear peaks.  
-This guidance helps with:
-
-- Seasonal promotions  
-- Inventory stocking cycles  
-- Timing future ad campaigns  
-
----
 
 # 6. Suggested Business Action
 
