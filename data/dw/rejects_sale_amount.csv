@@ -1,0 +1,2 @@
+transaction_id,sale_date,customer_id,product_id,store_id,campaign_id,sale_amount,discount_pct,state_code
+21,2025-05-04,1119,2055,403,2.0,,,
