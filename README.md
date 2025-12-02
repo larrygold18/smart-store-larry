@@ -132,23 +132,23 @@ Y-axis: Sum of saleamount
 Drilldown enabled (⬇⬇ icon)
 ## P6 – BI Insights & Storytelling (OLAP Analysis)
 
-This module extends Smart Store reporting by performing OLAP-style slicing, dicing, and drilldown in Python to uncover a business insight that supports a real decision.  
+This module extends Smart Store reporting by performing OLAP-style slicing, dicing, and drilldown in Python to uncover a business insight that supports a real decision.
 All computations were performed on Windows 11 inside a virtual environment.
 
 ---
 
 # 1. Business Goal
 
-**Goal:**  
-Identify the **top-selling product category** and analyze how its sales vary by **state** and by **month**.  
+**Goal:**
+Identify the **top-selling product category** and analyze how its sales vary by **state** and by **month**.
 
-**Why this matters:**  
+**Why this matters:**
 Understanding which product category performs best — and where/when it performs best — helps the Smart Store decide how to:
 - allocate inventory,
 - plan regional advertising,
 - optimize seasonal promotions.
 
-The outcome drives **one actionable result**:  
+The outcome drives **one actionable result**:
 📌 *Prioritize the top category in the top-performing states and align inventory to peak seasonal months.*
 
 ---
@@ -158,11 +158,11 @@ The outcome drives **one actionable result**:
 I used the **prepared CSVs** produced in P3–P5 located in `data/prepared/`:
 
 ### **Files:**
-- `sales_data_prepared_clean.csv`  
+- `sales_data_prepared_clean.csv`
   (transactionid, productid, customerid, saleamount, SaleDate.1, statecode)
-- `products_data_prepared.csv`  
+- `products_data_prepared.csv`
   (productid, productname, category)
-- `customers_data_prepared.csv`  
+- `customers_data_prepared.csv`
   (customer_id → renamed to customerid, country, signup_date)
 
 ### **Columns Used**
@@ -234,7 +234,7 @@ The cube was saved as:
 # 5. Results & Visualizations
 
 ### **Top Category Overall**
-From the script output:  
+From the script output:
 **Top Category = home**
 
 ---
@@ -256,13 +256,13 @@ From the script output:
 
 Based on the OLAP findings:
 
-### ✔ Inventory Strategy  
+### ✔ Inventory Strategy
 Stock more **Home-category** items in high-performing states.
 
-### ✔ Marketing Strategy  
+### ✔ Marketing Strategy
 Increase advertising in low-performing states to build awareness.
 
-### ✔ Seasonal Strategy  
+### ✔ Seasonal Strategy
 Align promotions and inventory ordering with strong sales months and prepare early for peak seasons.
 
 ---
@@ -283,3 +283,14 @@ Align promotions and inventory ordering with strong sales months and prepare ear
 Activate environment:
 ```powershell
 .venv\Scripts\activate
+
+## P7 Visualizations
+
+### 1. Total Net Sales by Category (Latest Year)
+![P7_Category_Sales](olap/figures/p7_sales_by_category.png)
+
+### 2. Net Sales for Top Category by Country
+![P7_Top_Category_Country](olap/figures/p7_top_category_by_country.png)
+
+### 3. Monthly Trend for Top Category in Top Country
+![P7_Monthly_Trend](olap/figures/p7_monthly_trend.png)
