@@ -278,19 +278,71 @@ Align promotions and inventory ordering with strong sales months and prepare ear
 
 ---
 
-# 8. How to Run the Analysis (Windows 11)
+---
 
-Activate environment:
-```powershell
-.venv\Scripts\activate
+## P7 – Custom BI Project (Custom Decision Support)
 
-## P7 Visualizations
+All computations were performed on Windows 11 inside a virtual environment using Python and VS Code.
 
-### 1. Total Net Sales by Category (Latest Year)
-![P7_Category_Sales](olap/figures/p7_sales_by_category.png)
+### 1. The Business Goal
 
-### 2. Net Sales for Top Category by Country
-![P7_Top_Category_Country](olap/figures/p7_top_category_by_country.png)
+**Goal:** Identify the **top-selling product category** and analyze how its sales vary by **country** and by **month** in the most recent full year.
 
-### 3. Monthly Trend for Top Category in Top Country
-![P7_Monthly_Trend](olap/figures/p7_monthly_trend.png)
+**Why it matters:**
+This helps Smart Store decide where to focus **marketing**, **inventory**, and **promotions** for the category that is already performing best, and to see **which regions and months** drive that success.
+
+---
+
+### 2. Data Source
+
+**Primary table:** `data/prepared/sales_data_prepared.csv`
+
+Columns used:
+
+- `saledate` – sale transaction date
+- `saleamount` – revenue per transaction
+- `discountpct` – discount percentage
+- `storeid` – store identifier
+- `campaignid` – campaign identifier
+- `productid` – product identifier
+
+Joined with:
+
+- `data/prepared/products_data_prepared.csv`
+  - `productid`, `productname`, `category`
+
+- `data/prepared/customers_data_prepared.csv`
+  - `customer_id`, `country`, `signup_date`
+
+The P7 script reads the **prepared** sales table and joins to product and customer tables to enrich each sale with **category** and **country**.
+
+---
+
+### 3. Tools Used
+
+- **Python 3** (inside `.venv`)
+- **pandas** – data loading and aggregation
+- **matplotlib** – charts
+- **VS Code on Windows 11** – editing and running scripts
+- **Git + GitHub** – version control
+
+Custom analysis script:
+
+- `olap/goal_custom_p7.py`
+
+Figures generated (saved by the script):
+
+- `olap/figures/p7_sales_by_category.png`
+- `olap/figures/p7_top_category_by_country.png`
+- `olap/figures/p7_monthly_trend.png`
+
+---
+
+### 4. Workflow & Logic
+
+1. **Load data**
+
+   ```python
+   sales = pd.read_csv("data/prepared/sales_data_prepared.csv", parse_dates=["saledate"])
+   products = pd.read_csv("data/prepared/products_data_prepared.csv")
+   customers = pd.read_csv("data/prepared/customers_data_prepared.csv")
