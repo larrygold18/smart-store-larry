@@ -346,3 +346,13 @@ Figures generated (saved by the script):
    sales = pd.read_csv("data/prepared/sales_data_prepared.csv", parse_dates=["saledate"])
    products = pd.read_csv("data/prepared/products_data_prepared.csv")
    customers = pd.read_csv("data/prepared/customers_data_prepared.csv")
+## P7 Visualizations
+
+### 1. Total Net Sales by Category
+![P7 Sales by Category](olap/figures/p7_sales_by_category.png)
+
+### 2. Net Sales for Top Category by Country
+![P7 Category by Country](olap/figures/p7_top_category_by_country.png)
+
+### 3. Monthly Trend for Top Category in Top Country
+![P7 Monthly Trend](olap/figures/p7_monthly_trend.png)
